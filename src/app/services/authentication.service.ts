@@ -42,9 +42,26 @@ export class AuthenticationService {
       });
   }
 
-  public logout() {
+  public logout(): void {
+    this.authenticationClient.logout().subscribe(
+      () => {
+        this.handleLogout();
+      },
+      (error: HttpErrorResponse) => {
+        this.handleFailedLogout(error);
+      }
+    );
+  }
+
+  private handleLogout(): void {
     localStorage.removeItem(this.token);
     this.router.navigate(['/login']);
+    this.snackBar.open("Logged out successfully", 'Close');
+  }
+
+  private handleFailedLogout(error: HttpErrorResponse): void {
+    console.error('Logout failed:', error);
+    this.snackBar.open('Logout failed', 'Close');
   }
 
 

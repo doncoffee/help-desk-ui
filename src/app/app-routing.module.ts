@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {SecretComponent} from "./secret/secret.component";
 import {AuthGuard} from "./helpers/auth.guard";
 import {RegisterPageComponent} from "./register-page/register-page.component";
 import {LoginPageComponent} from "./login-page/login-page.component";
+import {TicketsComponent} from "./tickets/tickets.component";
+import {SecretComponent} from "./secret/secret.component";
 
 const routes: Routes = [
   {

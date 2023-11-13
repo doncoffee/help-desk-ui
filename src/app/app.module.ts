@@ -18,13 +18,20 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {TicketsComponent} from "./tickets/tickets.component";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatIconModule} from "@angular/material/icon";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [
     AppComponent,
     SecretComponent,
     LoginPageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
+    TicketsComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +48,11 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatOptionModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatSortModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatToolbarModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
