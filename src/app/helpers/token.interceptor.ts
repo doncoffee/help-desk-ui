@@ -15,7 +15,14 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (this.authenticationService.isLoggedIn()) {
+    if (this.authenticationService.isJwtExpired()) {
+      let newRequest = request.clone({
+        setHeaders: {
+          Authorization: 'Bearer ',
+        },
+      });
+      return next.handle(newRequest);
+    } else if (this.authenticationService.isLoggedIn()) {
       let newRequest = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.authenticationService.getToken()}`,

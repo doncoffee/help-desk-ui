@@ -18,6 +18,11 @@ const routes: Routes = [
     path: 'register',
     component: RegisterPageComponent,
   },
+  {
+    path: 'tickets',
+    component: TicketsComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
