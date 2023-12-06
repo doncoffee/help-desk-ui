@@ -20,10 +20,11 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (!this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn() && !this.authService.isJwtExpired()) {
+      return true;
+    } else {
       this.router.navigate(['/login']);
+      return false;
     }
-
-    return true;
   }
 }

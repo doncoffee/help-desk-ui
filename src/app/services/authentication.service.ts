@@ -5,6 +5,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRole} from "../models/user-role.enum";
 import {Result} from "../models/result.model";
 import {HttpErrorResponse} from "@angular/common/http";
+import {jwtDecode} from "jwt-decode";
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AuthenticationService {
   constructor(
     private authenticationClient: AuthenticationClient,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   public login(email: string, password: string): void {
@@ -42,9 +43,26 @@ export class AuthenticationService {
       });
   }
 
-  public logout() {
+  public logout(): void {
+    this.authenticationClient.logout().subscribe(
+      () => {
+        this.handleLogout();
+      },
+      (error: HttpErrorResponse) => {
+        this.handleFailedLogout(error);
+      }
+    );
+  }
+
+  private handleLogout(): void {
     localStorage.removeItem(this.token);
     this.router.navigate(['/login']);
+    this.snackBar.open("Logged out successfully", 'Close', {duration: 5000});
+  }
+
+  private handleFailedLogout(error: HttpErrorResponse): void {
+    console.error('Logout failed:', error);
+    this.snackBar.open('Logout failed', 'Close', {duration: 5000});
   }
 
 
@@ -52,6 +70,23 @@ export class AuthenticationService {
         let token = localStorage.getItem(this.token);
         return token != null && token.length > 0;
     }
+
+  getUserRoleFromToken(token: string): string {
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.role;
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+      return '';
+    }
+  }
+
+  public isJwtExpired(): boolean {
+    let token = localStorage.getItem(this.token);
+    if (token == null) return false;
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+  }
 
     public getToken(): string | null {
         return this.isLoggedIn() ? localStorage.getItem(this.token) : null;
@@ -64,7 +99,7 @@ export class AuthenticationService {
 
             localStorage.setItem(this.token, result.token);
 
-            this.router.navigate(['/']);
+            this.router.navigate(['/tickets']);
             message = 'User has been authenticated.';
         } else if (result !== null) {
           message = result.errors.join(' ');
@@ -72,7 +107,7 @@ export class AuthenticationService {
             message = 'Something went wrong.';
         }
 
-        this.snackBar.open(message, 'Close');
+        this.snackBar.open(message, 'Close', {duration: 5000});
     }
   private handleFailedAuthentication(error: HttpErrorResponse): void {
 
@@ -83,6 +118,6 @@ export class AuthenticationService {
         `Backend returned code ${error.status}, body was: `, error.error);
     }
 
-    this.snackBar.open(error.error, 'Close');
+    this.snackBar.open(error.error, 'Close', {duration: 5000});
   }
 }

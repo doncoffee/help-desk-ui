@@ -1,0 +1,46 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+mat-form-field {
+  width: 100%;
+  margin: auto;
+}
+.main-body {
+  max-width: 80%;
+  margin: 20px auto;
+}
+.action-icon:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+.header-buttons {
+  display: flex;
+  place-items: center;
+  gap: 10px;
+}
+.center {
+  display: flex;
+  place-items: center;
+}
+.thumbnail {
+  color: #006aff;
+  text-decoration: underline #006aff;
+  cursor: pointer;
+}
+.select {
+  display: flex;
+  gap: 10px;
+  place-items: center;
+  justify-content: space-between;
+}
+.my-width {
+  width: 200px;
+}
+.icons {
+  display: flex;
+  gap: 6px;
+}
+.p {
+  padding-top: 20px;
+  margin: 0;
+}

@@ -1,0 +1,95 @@
+<div mat-dialog-title>
+  <h1>{{data ? 'Edit': 'Add'}} Ticket Form</h1>
+</div>
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option [value]="CategoryEnum.APPLICATION_AND_SERVICES">Application & Services</mat-option>
+          <mat-option [value]="CategoryEnum.BENEFITS_AND_PAPERWORK">Benefits & Paper Work</mat-option>
+          <mat-option [value]="CategoryEnum.HARDWARE_AND_SOFTWARE">Hardware & Software</mat-option>
+          <mat-option [value]="CategoryEnum.PEOPLE_MANAGEMENT">People Management</mat-option>
+          <mat-option [value]="CategoryEnum.SECURITY_AND_ACCESS">Security & Access</mat-option>
+          <mat-option [value]="CategoryEnum.WORKPLACES_AND_FACILITIES">Workplaces & Facilities</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Name:</mat-label>
+        <input matInput type="text" placeholder="i.e Task_01" formControlName="name" [errorStateMatcher]="matcher">
+        <mat-error
+          *ngIf="ticketForm.controls['name'].hasError('required')"
+        >
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Description:</mat-label>
+        <textarea matInput placeholder="i.e bring the laptop to the 201 office room at 11 a.m."
+                  formControlName="description" [errorStateMatcher]="matcher"></textarea>
+        <mat-error
+          *ngIf="ticketForm.controls['description'].hasError('required')"
+        >
+          Description is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Urgency</mat-label>
+        <mat-select formControlName="urgency">
+          <mat-option [value]="UrgencyEnum.CRITICAL">Critical</mat-option>
+          <mat-option [value]="UrgencyEnum.HIGH">High</mat-option>
+          <mat-option [value]="UrgencyEnum.AVERAGE">Average</mat-option>
+          <mat-option [value]="UrgencyEnum.LOW">Low</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker"
+               formControlName="desiredResolutionDate" [errorStateMatcher]="matcher">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error
+          *ngIf="ticketForm.controls['desiredResolutionDate'].hasError('required')"
+        >
+          Date is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <div class="fileName">
+          <mat-toolbar>
+            <input matInput [value]="fileName" readonly name="memberContactNo" />
+            <button mat-flat-button color="primary">
+              Browse
+            </button>
+          </mat-toolbar>
+          <input type="file" id="fileUpload" name="fileUpload" (change)="fileChangeEvent($event)"
+                 multiple="multiple" accept=".pdf, .png, .doc, .docx, .jpg, .jpeg" formControlName="attachment" />
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Comment:</mat-label>
+        <textarea matInput placeholder="i.e laptop is very important to me"
+                  formControlName="comment" [errorStateMatcher]="matcher"></textarea>
+        <mat-error
+          *ngIf="ticketForm.controls['comment'].hasError('required')"
+        >
+          Comment is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="action-btns">
+    <button style="margin: 10px;" mat-raised-button color="accent" type="submit">{{data ? 'Update': 'Save'}}</button>
+    <button mat-raised-button type="button" color="warn" [mat-dialog-close]="false">Cancel</button>
+  </div>
+</form>

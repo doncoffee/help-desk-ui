@@ -39,4 +39,8 @@ export class AuthenticationClient {
       },
     );
   }
+
+  public logout(): Observable<string> {
+    return this.http.post<string>(environment.backendUrl + '/api/v1/auth/logout', { responseType: 'text' });
+  }
 }
