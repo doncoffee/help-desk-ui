@@ -5,6 +5,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRole} from "../models/user-role.enum";
 import {Result} from "../models/result.model";
 import {HttpErrorResponse} from "@angular/common/http";
+import {jwtDecode} from "jwt-decode";
 
 @Injectable({
   providedIn: 'root',
@@ -69,6 +70,16 @@ export class AuthenticationService {
         let token = localStorage.getItem(this.token);
         return token != null && token.length > 0;
     }
+
+  getUserRoleFromToken(token: string): string {
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.role;
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+      return '';
+    }
+  }
 
   public isJwtExpired(): boolean {
     let token = localStorage.getItem(this.token);

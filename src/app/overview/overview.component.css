@@ -1,0 +1,16 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+.action-icon:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+.center {
+  display: flex;
+  place-items: center;
+}
+.header-buttons {
+  display: flex;
+  place-items: center;
+  gap: 10px;
+}

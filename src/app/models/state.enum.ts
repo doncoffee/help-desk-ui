@@ -1,0 +1,9 @@
+export enum StateEnum {
+  APPROVED = 'APPROVED',
+  NEW = 'NEW',
+  DRAFT = 'DRAFT',
+  DECLINED = 'DECLINED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+  CANCELLED = 'CANCELLED',
+}

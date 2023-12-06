@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+  <span>Help desk</span>
+  <span class="example-spacer"></span>
+  <div class="header-buttons">
+    <button (click)="goBackToOverview()" mat-raised-button color="basic">TICKET OVERVIEW</button>
+    <span (click)="logout()" class="material-icons, action-icon center" >
+      <mat-icon>logout</mat-icon>
+    </span>
+  </div>
+</mat-toolbar>
+<div
+  class="feedback-card-container"
+  fxLayout="column"
+  fxLayoutAlign="center"
+>
+  <mat-card class="feedback-card">
+    <mat-card-header>
+      <mat-card-title>Feedback</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="block">
+        <form [formGroup]="feedbackForm"
+              fxLayout="column"
+              fxLayoutAlign="center stretch">
+          <star-rating-control formControlName="rate" [hoverEnabled]="true" size="large" space="no"></star-rating-control>
+          <mat-form-field>
+            <textarea matInput formControlName="text" placeholder="Tell us about your experience" [errorStateMatcher]="matcher"></textarea>
+            <mat-error
+              *ngIf="feedbackForm.controls['text'].hasError('required')"
+            >
+              Text is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" (click)="leaveFeedback()" >
+        Leave feedback
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

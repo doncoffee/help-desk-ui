@@ -1,0 +1,119 @@
+<mat-toolbar color="primary">
+  <span>Help desk</span>
+  <span class="example-spacer"></span>
+  <div class="header-buttons">
+    <button (click)="goBackToTicketList()" mat-raised-button color="basic">TICKET LIST</button>
+    <button (click)="goToFeedback()" mat-raised-button color="basic">LEAVE FEEDBACK</button>
+    <span (click)="logout()" class="material-icons, action-icon center" >
+      <mat-icon>logout</mat-icon>
+    </span>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Ticket Details</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <span mat-line>Category: {{ ticketData?.category }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>Created On: {{ ticketData?.createdOn }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>State: {{ ticketData?.state }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>Urgency: {{ ticketData?.urgency }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>Desired Resolution Date: {{ ticketData?.desiredResolutionDate }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>Description: {{ ticketData?.description }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>Owner: {{ ticketData?.owner }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <span mat-line>Approver: {{ ticketData?.approver }}</span>
+      </mat-list-item>
+      <mat-list-item >
+        <span mat-line>Attachment: </span>
+        <button mat-icon-button (click)="downloadAttachedFile()">
+          <mat-icon>cloud_download</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<mat-tab-group>
+  <mat-tab label="Ticket history">
+    <div class="table-container">
+      <table mat-table [dataSource]="historyDataSource">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let row"> {{row.date}} </td>
+        </ng-container>
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef> User </th>
+          <td mat-cell *matCellDef="let row"> {{row.user}}</td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let row"> {{row.action}}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let row"> {{row.description}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedHistoryColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedHistoryColumns;"></tr>
+
+        <!-- This row will be shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No history related to this ticket</td>
+        </tr>
+      </table>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Comments">
+    <div class="table-container">
+        <table mat-table [dataSource]="commentsDataSource">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let row"> {{row.date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef> User </th>
+            <td mat-cell *matCellDef="let row"> {{row.user}}</td>
+          </ng-container>
+          <ng-container matColumnDef="text">
+            <th mat-header-cell *matHeaderCellDef> Comment </th>
+            <td mat-cell *matCellDef="let row"> {{row.text}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedCommentsColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedCommentsColumns;"></tr>
+
+          <!-- This row will be shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No comments yet</td>
+          </tr>
+      </table>
+    </div>
+    <div>
+      <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+        <mat-form-field>
+          <textarea matInput formControlName="text" placeholder="Add a comment"></textarea>
+        </mat-form-field>
+        <button mat-raised-button type="submit" color="primary">Add Comment</button>
+      </form>
+    </div>
+  </mat-tab>
+</mat-tab-group>
